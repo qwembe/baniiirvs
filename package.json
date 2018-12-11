@@ -4,12 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "startall":"npm run plane drulen dstart dadc drdc dadp",
     "plane": "node ./plane/bin/www",
+    "drulen": "node ./dispetcherRulenia/bin/www",
+    "dstart": "node ./dispetcherStarta/bin/www",
+    "dadc": "node ./dispetcherADC/bin/www",
+    "drdc": "node ./dispetcherRDC/bin/www",
+    "dadp": "node ./dispetcherADP/bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "arti",
   "license": "ISC",
   "dependencies": {
-    "express-generator": "^4.16.0"
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-generator": "^4.16.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0",
+    "pug": "2.0.0-beta11"
   }
 }
