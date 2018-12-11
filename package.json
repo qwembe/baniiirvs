@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "startall":"npm run plane drulen dstart dadc drdc dadp",
+    "startall":"echo \"hz kak eto sdelat'\" && exit 1",
     "plane": "node ./plane/bin/www",
     "drulen": "node ./dispetcherRulenia/bin/www",
     "dstart": "node ./dispetcherStarta/bin/www",
