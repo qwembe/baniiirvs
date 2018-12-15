@@ -1,5 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.w3-container
+    script(src="http://localhost:3030/socket.io/socket.io.js")
+    p Welcome to #{title}
+    hr
+    div.w3-container.w3-margin
+      button#request_permit.w3-button.w3-green Запрос на взлет
+      button#request_launch_engie.w3-button.w3-green Запрос на запуск двигателей
+      button#request_runnway_entry.w3-button.w3-green  Запрос на взлетную полосу
+      button#request_liftoff.w3-button.w3-green  Запрос на взлет
+    hr
+    div.w3-card.w3-yellow.w3-container
+        p Состояние:
+        div#state
+    hr
+    div
+        p Cообщения:
+        div#message.w3-container
+    script(src="./javascripts/plane.js")
