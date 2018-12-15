@@ -17,16 +17,13 @@ liftoff.disabled = "disabled";
 function click_permit() {
     permit.disabled = "disabled";
 }
-
 function click_launch_engie() {
     launch_engie.disabled = "";
     //request_launch_engie.disabled = "disabled";
 }
-
 function click_runnway_entry() {
     runnway_entry.disabled = "";
 }
-
 function click_liftoff() {
     liftoff.disabled = "";
 }
@@ -52,14 +49,26 @@ request_launch_engie.onclick = () => {
 
 }
 request_runnway_entry.onclick = () => {
-
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) callback(this.responseText);
+    };
+    xhttp.open("POST", "http://localhost:3000/ask_line", true);
+    xhttp.send();
+    runnway_entry.disabled = "disabled"
 }
 request_liftoff.onclick = () => {
-
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) callback(this.responseText);
+    };
+    xhttp.open("POST", "http://localhost:3000/ask_liftoff", true);
+    xhttp.send();
+    liftoff.disabled = "disabled"
 }
 
 function message(msg){
-    out.innerHTML += `<div>${new Date()} : ${msg}</div>`
+    out.innerHTML += `<div>${new Date()} : ${msg}</div>`  // TODO make messages
 }
 
 socket.on("currentState", (data) => {
@@ -69,7 +78,6 @@ socket.on("currentState", (data) => {
         current_state = data.data;
     }
 })
-
 
 socket.on("ask_permit", (data) => {
       console.log(data)
@@ -108,7 +116,7 @@ socket.on("ask_launch", (data) => {
 
             };
         };
-        url = `http://${data.url}:${data.port}/ask_permit`
+        url = `http://${data.url}:${data.port}/ask_launch`
         console.log(url)
         xhttp.open("GET", url, true); //TODO ask rulenia?
         // xhttp.send();
@@ -122,5 +130,57 @@ function processRulenia_Answer(data){
     socket.json.emit('answerRulenia',{type: "answerRulenia", data: true}) //TODO later data
     click_runnway_entry()
 }
+
+socket.on("ask_line", (data) => {
+      console.log(data)
+    if (data.type === "toStarta") {
+        data = data.data;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function (data) {
+            if (this.readyState == 4 && this.status == 200) {
+                processLine_Answer(data);
+
+            };
+        };
+        url = `http://${data.url}:${data.port}/ask_line`
+        console.log(url)
+        xhttp.open("GET", url, true); //TODO ask rulenia?
+        // xhttp.send();
+        processLine_Answer(data); //TODO delete later
+    }
+})
+
+function processLine_Answer(data){
+    /*id(data.type === "")*/
+    console.log("answerLine")
+    socket.json.emit('answerLine',{type: "answerLine", data: true}) //TODO later data
+    click_liftoff()
+}
+
+socket.on("ask_liftoff", (data) => {
+      console.log(data)
+    if (data.type === "toStarta") {
+        data = data.data;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function (data) {
+            if (this.readyState == 4 && this.status == 200) {
+                processLiftOff_Answer(data);
+
+            };
+        };
+        url = `http://${data.url}:${data.port}/ask_liftoff`
+        console.log(url)
+        xhttp.open("GET", url, true); //TODO ask rulenia?
+        // xhttp.send();
+        processLiftOff_Answer(data); //TODO delete later
+    }
+})
+
+function processLiftOff_Answer(data){
+    /*id(data.type === "")*/
+    console.log("answerLiftOff")
+    socket.json.emit('answerLiftOff',{type: "answerLiftOff", data: true}) //TODO later data
+}
+
 
 
