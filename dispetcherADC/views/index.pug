@@ -1,5 +1,19 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.w3-container
+    div.shadow
+      h1= title
+    div.w3-container.w3-margin
+      button#to_RDC.w3-button.w3-green Передать управление РДЦ
+    hr
+    form
+      label Команды для самолёта: 
+      input(class="w3-input" type="text" id="command")
+      div.w3-container.w3-margin
+      button#submit_command.w3-button.w3-green Отправить
+    hr
+    div.w3-card.w3-yellow.w3-container
+      p Cообщения:
+      div#message
+    hr
