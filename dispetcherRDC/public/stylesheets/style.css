@@ -2,6 +2,15 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+.shadow {
+  margin-bottom: 10px;
+  background:rgb(133, 97, 66);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5); 
+  padding: 10px;
+}
+h1 {
+  color: white; text-align: center; position: center; margin: 10px; font-size: 45px
+}
 
 a {
   color: #00B7FF;
