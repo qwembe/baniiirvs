@@ -1,5 +1,23 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	script(src="http://localhost:3031/socket.io/socket.io.js")
+	div.w3-bar.w3-card.w3-center.w3-round.w3-white
+		button#permit_btn.w3-button.w3-round.w3-border.w3-border-green.w3-xlarge.w3-margin.w3-hover-green
+			i(class="fa fa-plane").w3-margin-right
+			<b>Полет разрешен</b>
+		button#forbidden_btn.w3-button.w3-round.w3-border.w3-border-red.w3-xlarge.w3-hover-red
+			i(class="fa fa-close").w3-margin-right
+			<b>Полет запрещен</b>
+
+	div#chat.w3-ul.w3-card.w3-panel.w3-round.w3-white.w3-large(style="width: 600px; min-height: 600px; float: left; margin-right:20px;")
+		li
+			h3 Сообщения
+		li Погдные условия нормальные
+
+	div(style="float: left; margin-top:15px;")
+		iframe(id="map-embed-iframe" frameborder="0" height="600px" width="600px" src="https://maps.darksky.net/@temperature,60.169,30.410,7?domain=http%3A%2F%2Flocalhost%3A3001%2F&amp;auth=1544915810_7064c653e6325f3df7433176cfd65d47&amp;embed=true&amp;timeControl=true&amp;fieldControl=true&amp;defaultField=temperature&amp;defaultUnits=_c")
+
+	div.w3-panel(style="float: left;")
+		iframe(frameborder="0" marginheight="0" marginwidth="0" width="550" height="600" src="https://www.flightradar24.com/simple?lat=59.9&lon=30.3&z=10")
+	script(src="../js/adp.js")

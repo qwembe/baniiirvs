@@ -1,8 +1,13 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url(/img/background4.png);
 }
 
 a {
   color: #00B7FF;
+}
+
+button:active, button:focus {
+  outline: none;
 }
