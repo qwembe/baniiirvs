@@ -31,10 +31,33 @@
 Надеюсь на активное сотруднечество
 :-)
 
-# Приет
+# Дарова
 
-сырая версия самолета. установлен socket.io  и w3 css.
+важная обнова. cors переоценён. вместо него стоит использовать следующий код в index.js (в начале):
 
-Рекомендую обратить внимание server_addresses в руте. Используйте его для обращения к друг другу. Они могут измениться, а так будет удобно.
+```javascript
+router.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-Пару слов о реализации. В роуте стэйт машина. Будут добавлены еще роуты. Этот серевер будет обращатся к другим через ajax запрос на страничке по socket.( это самый удобный вариант что придумал)
+    //intercepts OPTIONS method
+    if ('OPTIONS' === req.method) {
+        //respond with 200
+        res.send(200);
+    }
+    else {
+        //move on
+        next();
+    }
+});
+```
+
+и в ajax запросе надо дописать
+
+```javascript
+    xhttp.setRequestHeader("Content-Type", "application/json");   // !!!important
+    xhttp.send(JSON.stringify({type: "command", data: command.value}));  // !!!important
+```
+
+как то так.

@@ -90,10 +90,10 @@ socket.on("ask_permit", (data) => {
 
             };
         };
-        url = `http://${data.url}:${data.port}/ask_permit`
+        url = `http://${data.url}:${data.port}/permit`
         console.log(url)
         xhttp.open("GET", url, true); //TODO ask adp?
-        // xhttp.send();
+        xhttp.send();
         processADP_Answer(data); //TODO delete later
     }
 })
@@ -181,6 +181,10 @@ function processLiftOff_Answer(data){
     console.log("answerLiftOff")
     socket.json.emit('answerLiftOff',{type: "answerLiftOff", data: true}) //TODO later data
 }
+
+socket.on("message",(data)=>{
+    console.log(data);
+})
 
 
 

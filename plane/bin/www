@@ -7,16 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('plane:server');
 var http = require('http');
-const cors = require('cors')
 
-const corsOptions = {
-    'credentials': true,
-    'origin': true,
-    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    'allowedHeaders': 'Authorization,X-Requested-With,X-HTTP-Method-Override,Content-Type,Cache-Control,Accept',
-}
-
-app.use(cors(corsOptions))
 
 /**
  * Get port from environment and store in Express.

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "startall": "echo \"hz kak eto sdelat'\" && exit 1",
-    "plane": "node ./plane/bin/www",
+    "plane": "node  ./plane/bin/www",
     "drulen": "node ./dispetcherRulenia/bin/www",
     "dstart": "node ./dispetcherStarta/bin/www",
     "dadc": "node ./dispetcherADC/bin/www",
@@ -16,6 +16,7 @@
   "author": "arti",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

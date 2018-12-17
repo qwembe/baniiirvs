@@ -18,7 +18,6 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
-app.u
 
 /**
  * Get port from environment and store in Express.
