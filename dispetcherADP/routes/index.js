@@ -27,32 +27,32 @@ io.on('connection', (socket) => {
     io.emit('event', {type: "message", data: "всем привет в этом чатике"});
 
     socket.on('permit',() => {
-    	current_state = "permit";
-    	socket.emit('event', {type: "permit", data: "Полет разрешен"});
-	});
+        current_state = "permit";
+        socket.emit('event', {type: "permit", data: "Полет разрешен"});
+    });
 
-	socket.on('forbidden', () => {
-		current_state = "forbidden";
-		socket.emit('event', {type: "forbidden", data: "Полет запрещен"});
-	})
+    socket.on('forbidden', () => {
+        current_state = "forbidden";
+        socket.emit('event', {type: "forbidden", data: "Полет запрещен"});
+    })
 });
 
 /* home page */
 router.get('/', (req, res, next) => {
-	res.render('index', { title: 'Dispetcher ADP' });
+    res.render('index', { title: 'Dispetcher ADP' });
 });
 
 /* response to requests from plane */
 router.get('/ask_permit', (req, res, next) => {
-	let permition;
-	if (current_state === "forbidden") {
-		permition = false;
-	}
-	else if (current_state === "permit") {
-		permition = true;
-	}
+    let permition;
+    if (current_state === "forbidden") {
+        permition = false;
+    }
+    else if (current_state === "permit") {
+        permition = true;
+    }
 
-	sendAnswer(planeURL, {type: "answerADP", data: permition});
+    sendAnswer(planeURL, {type: "answerADP", data: permition});
 });
 
 function sendAnswer(url, data) {
@@ -64,6 +64,9 @@ function sendAnswer(url, data) {
     };
     console.log(url);
     xhttp.open("GET", url, true);
+    // is this correct? oh idk 
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(data));
 };
 
 module.exports = router;
