@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  script(src="http://localhost:3032/socket.io/socket.io.js")
+  div
+    h1= title
+    #button_block
+        button#admit_btn.w3-btn.w3-teal.w3-margin.w3-hover-green Запуск двигателей разрешен
+        button#veto_btn.w3-btn.w3-teal.w3-margin.w3-hover-red Запуск двигателей запрещен
+        button#send_btn.w3-btn.w3-teal.w3-margin Передать управление
+    #message_block.w3-container.w3-sand
+        h3 Сообщения
+  script(src="./javascripts/logic.js")
