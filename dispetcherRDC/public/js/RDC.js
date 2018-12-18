@@ -11,5 +11,6 @@ submit_command.onclick = () => {
             callback(this.responseText);
     };
     xhttp.open("POST", "http://localhost:3000/readCommand", true);
-    xhttp.send({type: "command", data: command.value});
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({type: "command", data: command.value}));
 }

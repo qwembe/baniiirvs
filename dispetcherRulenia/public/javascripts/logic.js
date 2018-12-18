@@ -18,7 +18,8 @@ socket.on('event', (data) => {
         message_block.innerHTML += `<li style="color: red;"> ${data.data}</li>`;
     }
     else if (data.type === "send"){
-        message_block.innerHTML += `<li> ${data.data}</li>`;
+        message_block.innerHTML += `<li> Передача управления диспетчеру старта...</li>`;
+        sendControlNext(data.data);
     }
 });
 
@@ -37,3 +38,16 @@ send.onclick = () =>{
     send.disabled = "disabled";
     socket.emit("send");
 };
+
+function sendControlNext(where) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function (data) {
+        if (this.readyState == 4 && this.status == 200) {
+            processLine_Answer(data);
+
+        }
+        ;
+    };
+    xhttp.open("GET", where+'/giveAction', true);
+    xhttp.send();
+}

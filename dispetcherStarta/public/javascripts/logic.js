@@ -5,6 +5,8 @@ var fly_veto = document.getElementById("fly_veto_btn");
 
 var socket = io.connect("http://localhost:3033");
 
+vpp_permit.disabled = "disabled";
+vpp_veto.disabled = "disabled";
 fly_permit.disabled = "disabled";
 fly_veto.disabled = "disabled";
 
@@ -26,6 +28,11 @@ socket.on('event', (data) => {
         message_block.innerHTML += `<li style="color: red;"> ${data.data}</li>`;
     }
 });
+
+socket.on('working', () => {
+    vpp_permit.disabled = "";
+    vpp_veto.disabled = "";
+})
 
 vpp_permit.onclick = () => {
     vpp_permit.disabled = "disabled";
