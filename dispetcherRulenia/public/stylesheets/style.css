@@ -1,8 +1,22 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #ffdf95;
 }
 
-a {
-  color: #00B7FF;
+li {
+  list-style-type: none;
 }
+
+#button_block{
+  width: 820px;
+  margin: auto;
+}
+
+#message_block{
+  min-height: 400px;
+  width: 440px;
+  margin: auto;
+}
+
+
