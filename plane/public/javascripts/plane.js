@@ -205,6 +205,31 @@ socket.on("message", (data) => {
     }
 })
 
+socket.on("messageA", (data) => {
+    console.log(data)
+    if (data.type === "toADC") {
+        data = data.data;
+        const xhttp = new XMLHttpRequest();
+        url = `http://${data.url}:${data.port}/wathingYou`
+        console.log(url)
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    }
+});
+
+socket.on("messageB", (data) => {
+    console.log(data)
+    if (data.type === "toRDC") {
+        data = data.data;
+        const xhttp = new XMLHttpRequest();
+        url = `http://${data.url}:${data.port}/wathingYou`
+        console.log(url)
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    }
+
+})
+
 
 function post(msg, col) {
     d = new Date()

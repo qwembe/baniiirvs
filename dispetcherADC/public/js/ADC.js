@@ -3,6 +3,8 @@ var to_RDC = document.getElementById("to_RDC");
 var send_command = document.getElementById("submit_command");
 var command = document.getElementById("command");
 
+var socket = io.connect("http://localhost:3034");
+
 to_RDC.disabled = "";
 send_command.disabled = "";
 
@@ -39,3 +41,9 @@ submit_command.onclick = () => {
 
     }
 }
+
+socket.on("hello",()=>{
+    // TODO Ринат, сделай здесь приветсвенное. "Контроль получен" например
+   // типо в этом методе будут выполнятся ,когда вообще можно будет отправлять сообщения, ок? и в рдц тоже
+
+})

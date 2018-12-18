@@ -5,6 +5,10 @@ const state = require('../states').state;
 const adp = require("../../server_addresses").dispetcherADP
 const rulenia = require("../../server_addresses").dispetcherRulenia
 const starta = require("../../server_addresses").dispetcherStarta
+const adc = require("../../server_addresses").dispetcherADC
+const rdc = require("../../server_addresses").dispetcherRDC
+
+
 
 //!-important-!
 router.use(function (req, res, next) {
@@ -141,7 +145,7 @@ function stateMachine() {
                 LiftOff = setTimeout(() => {
                     io.sockets.json.emit('message', {type: "changeState", data: "Полет нормальный"});
                     current_state = state.ADC_CONTROL;
-                    io.sockets.json.emit('message', {type: "changeState", data: "Установлено соединение с АДЦ"});
+                    io.sockets.json.emit('messageA', {type: "toADC", data: adc});
                 }, 5000)
             break;
         case state.ADC_CONTROL:
@@ -193,6 +197,7 @@ router.post('/ask_liftoff', function (req, res, next) {
 router.post('/toRDC', function (req, res, next) {
     if (current_state === state.ADC_CONTROL) {
         current_state = state.RDC_CONTROL
+        io.sockets.json.emit('messageB', {type: "toRDC", data: rdc})
         io.sockets.json.emit('message', {type: "changeState", data: "Управление передано РДЦ"})
     } else {
         res.json({type: "response", data: "too early!"});  //TODO think about it later

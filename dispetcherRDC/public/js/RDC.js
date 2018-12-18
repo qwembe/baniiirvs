@@ -1,6 +1,7 @@
 var out = document.getElementById("message");
 var send_command = document.getElementById("submit_command");
 var command = document.getElementById("command");
+var socket = io.connect("http://localhost:3035");
 
 send_command.disabled = "";
 
@@ -15,3 +16,8 @@ submit_command.onclick = () => {
     xhttp.send(JSON.stringify({type: "command", data: command.value}));
     command.value = ""
 }
+
+socket.on("hello",()=>{
+    // TODO Ринат, сделай здесь приветсвенное. "Контроль получен" например
+    // здесь тоже ) 
+})
