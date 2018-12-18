@@ -43,7 +43,7 @@ router.get('/', (req, res, next) => {
 });
 
 /* response to requests from plane */
-router.get('/ask_permit', (req, res, next) => {
+router.get('/permit', (req, res, next) => {
     let permition;
     if (current_state === "forbidden") {
         permition = false;
@@ -52,21 +52,7 @@ router.get('/ask_permit', (req, res, next) => {
         permition = true;
     }
 
-    sendAnswer(planeURL, {type: "answerADP", data: permition});
+    res.json({type: "answerADP", data: permition});
 });
-
-function sendAnswer(url, data) {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function (data) {
-        if (this.readyState == 4 && this.status == 200) {
-            callback(this.responseText);
-        };
-    };
-    console.log(url);
-    xhttp.open("GET", url, true);
-    // is this correct? oh idk 
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify(data));
-};
 
 module.exports = router;
