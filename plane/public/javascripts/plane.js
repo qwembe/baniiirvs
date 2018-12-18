@@ -67,9 +67,6 @@ request_liftoff.onclick = () => {
     liftoff.disabled = "disabled"
 }
 
-function message(msg){
-    out.innerHTML += `<div>${new Date()} : ${msg}</div>`  // TODO make messages
-}
 
 socket.on("currentState", (data) => {
     // console.log(data)
@@ -184,7 +181,17 @@ function processLiftOff_Answer(data){
 
 socket.on("message",(data)=>{
     console.log(data);
+    if(data.type === "command"){
+        post(data.data,'green')
+    }
+    if(data.type === "changeState"){
+        post(data.data,'blue')
+    }
 })
 
 
+function post(msg,col){
+    d = new Date()
+    out.innerHTML += `<li class='w3-text-${col}'>${d.toLocaleDateString()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} : ${msg}</li>`  // TODO make messages
+}
 

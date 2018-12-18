@@ -7,7 +7,7 @@ const rulenia = require("../../server_addresses").dispetcherRulenia
 const starta = require("../../server_addresses").dispetcherStarta
 
 //!-important-!
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -25,7 +25,7 @@ router.use(function(req, res, next) {
 //!-important-!
 
 
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
     next();
@@ -42,37 +42,41 @@ var LiftOff = undefined;
 io.sockets.on('connection', (socket) => {
     socket.json.emit('hello', {type: "message", data: current_state})
 
-    socket.on('answerADP',(data)=>{
-        if(data.type === "answerADP"){
-            if(data.data){
+    socket.on('answerADP', (data) => {
+        if (data.type === "answerADP") {
+            if (data.data) {
                 current_state = state.HAVE_PERMIT; // Todo make simple check of prev state
+                io.sockets.json.emit('message', {type: "changeState", data: "Разрешение получено"});
             }
         }
     })
 
-    socket.on('answerRulenia',(data)=>{
+    socket.on('answerRulenia', (data) => {
         console.log(data);
-        if(data.type === "answerRulenia"){
-            if(data.data){
+        if (data.type === "answerRulenia") {
+            if (data.data) {
                 current_state = state.LAUNCH_ENGIE;
+                io.sockets.json.emit('message', {type: "changeState", data: "Разрешение получено"});
             }
         }
     })
 
-    socket.on('answerLine',(data)=>{
+    socket.on('answerLine', (data) => {
         console.log(data);
-        if(data.type === "answerLine"){
-            if(data.data){
+        if (data.type === "answerLine") {
+            if (data.data) {
                 current_state = state.RUNWAY_ENTRY;
+                io.sockets.json.emit('message', {type: "changeState", data: "Разрешение получено"});
             }
         }
     })
 
-    socket.on('answerLiftOff',(data)=>{
+    socket.on('answerLiftOff', (data) => {
         console.log(data);
-        if(data.type === "answerLiftOff"){
-            if(data.data){
+        if (data.type === "answerLiftOff") {
+            if (data.data) {
                 current_state = state.GRANT_LIFTOFF;
+                io.sockets.json.emit('message', {type: "changeState", data: "Разрешение получено"});
             }
         }
     })
@@ -87,15 +91,15 @@ function askPermit() {
     io.sockets.json.emit('ask_permit', {type: "toADP", data: adp})
 }
 
-function askLaunch(){
+function askLaunch() {
     io.sockets.json.emit('ask_launch', {type: "toRulenia", data: rulenia})
 }
 
-function askLine(){
+function askLine() {
     io.sockets.json.emit('ask_line', {type: "toStarta", data: starta})
 }
 
-function askLiftOff(){
+function askLiftOff() {
     io.sockets.json.emit('ask_liftoff', {type: "toStarta", data: starta})
 }
 
@@ -111,29 +115,34 @@ function stateMachine() {
             askPermit();
             break;
         case state.HAVE_PERMIT:
-            if(BUTTON_LAUNCH_ENGIE_PRESSED){
+            if (BUTTON_LAUNCH_ENGIE_PRESSED) {
                 askLaunch();
             }
             break;
         case state.LAUNCH_ENGIE:
-            if(BUTTON_ASK_LINE_PRESSED){
+            if (BUTTON_ASK_LINE_PRESSED) {
                 askLine();
             }
             break;
         case state.RUNWAY_ENTRY:
-            if(BUTTON_ASK_LIFTOFF_PRESSED){
+            if (BUTTON_ASK_LIFTOFF_PRESSED) {
                 askLiftOff();
             }
             break;
         case state.GRANT_LIFTOFF:
-            timeToLiftOff = setTimeout(() => {
-                current_state = state.LIFT_OFF;
-            },5000)
+            if (timeToLiftOff == undefined)
+                timeToLiftOff = setTimeout(() => {
+                    io.sockets.json.emit('message', {type: "changeState", data: "Взлет"});
+                    current_state = state.LIFT_OFF;
+                }, 5000)
             break;
         case state.LIFT_OFF:
-            LiftOff = setTimeout(() => {
-                current_state = state.ADC_CONTROL;
-            },5000)
+            if (LiftOff == undefined)
+                LiftOff = setTimeout(() => {
+                    io.sockets.json.emit('message', {type: "changeState", data: "Полет нормальный"});
+                    current_state = state.ADC_CONTROL;
+                    io.sockets.json.emit('message', {type: "changeState", data: "Установлено соединение с АДЦ"});
+                }, 5000)
             break;
         case state.ADC_CONTROL:
             //TODo What next?
@@ -147,7 +156,7 @@ function stateMachine() {
 
 const timer = setInterval(() => {
     stateMachine()
-}, 2000)
+}, 1000)
 
 
 /* GET home page. */
@@ -157,43 +166,49 @@ router.get('/', function (req, res, next) {
 
 router.post('/ask_permit', function (req, res, next) {
     current_state = state.DONT_HAVE_PERMIT;
+    io.sockets.json.emit('message', {type: "changeState", data: "Ожидание ответа от АДП"})
+    res.sendStatus(200);
 });
 
 router.post('/ask_launch', function (req, res, next) {
     BUTTON_LAUNCH_ENGIE_PRESSED = true;
+    io.sockets.json.emit('message', {type: "changeState", data: "Создан запрос на запуск двигателей"});
+    res.sendStatus(200);
 });
 
 router.post('/ask_line', function (req, res, next) {
     BUTTON_ASK_LINE_PRESSED = true;
+    io.sockets.json.emit('message', {type: "changeState", data: "Создан запрос на предоставление взлетной полосы"});
+    res.sendStatus(200);
 });
 
 router.post('/ask_liftoff', function (req, res, next) {
     BUTTON_ASK_LIFTOFF_PRESSED = true;
+    io.sockets.json.emit('message', {type: "changeState", data: "Создан запрос взлет"});
+    res.sendStatus(200);
 });
 
 
 //Rinata
 router.post('/toRDC', function (req, res, next) {
-    if(current_state === state.ADC_CONTROL){
+    if (current_state === state.ADC_CONTROL) {
         current_state = state.RDC_CONTROL
+        io.sockets.json.emit('message', {type: "changeState", data: "Управление передано РДЦ"})
     } else {
-
-        res.json({type:"response",data:"too early!"});  //TODO think about it later
+        res.json({type: "response", data: "too early!"});  //TODO think about it later
     }
-    //res.send(200);
+    res.send(200);
 });
 
 router.post('/readCommand', function (req, res, next) {
-    if(current_state === state.ADC_CONTROL){
-        console.log(req.query);
-        //io.sockets.json.emit('message', {type: "message", data: req.query})
-    }else {
+    if ((current_state === state.ADC_CONTROL) || (current_state === state.RDC_CONTROL)) {
         console.log(req.body);
+        io.sockets.json.emit('message', req.body)
+    } else {
+        console.log(current_state)
     }
-
     res.sendStatus(200);
 });
-
 
 
 module.exports = router;
