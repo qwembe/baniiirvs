@@ -52,7 +52,7 @@ router.get('/permit', (req, res, next) => {
         permition = true;
     }
 
-    res.json({type: "answerADP", data: permition});
+    res.send(JSON.stringify({type: "answerADP", data: permition}));
 });
 
 module.exports = router;

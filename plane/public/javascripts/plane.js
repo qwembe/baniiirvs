@@ -86,12 +86,13 @@ socket.on("ask_permit", (data) => {
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function (data) {
             if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(data.currentTarget.response);
                 processADP_Answer(data);
 
             }
             ;
         };
-        url = `http://${data.url}:${data.port}/ask_permit`
+        url = `http://${data.url}:${data.port}/permit`
         console.log(url)
         xhttp.open("GET", url, true); //TODO ask adp?
         xhttp.send();
@@ -100,10 +101,12 @@ socket.on("ask_permit", (data) => {
 })
 
 function processADP_Answer(data) {
-    /*id(data.type === "")*/
-    console.log("answerADP")
-    socket.json.emit('answerADP', {type: "answerADP", data: true}) //TODO later data
-    click_launch_engie()
+    if (data.type === "answerADP") {
+        if (data.data) {
+            socket.json.emit('answerADP', {type: "answerADP", data: true}) //TODO later data
+            click_launch_engie()
+        }
+    }
 }
 
 socket.on("ask_launch", (data) => {  //done

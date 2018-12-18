@@ -4,9 +4,9 @@ block content
   div.w3-container
     div.shadow
       h1= title
-    form
+    div
       label Команды для самолёта: 
-      input(class="w3-input" type="text" name="command")
+      input#command(class="w3-input" type="text" name="command")
       div.w3-container.w3-margin
       button#submit_command.w3-button.w3-green Отправить
     hr
@@ -14,3 +14,4 @@ block content
       p Cообщения:
       div#message
     hr
+    script(src="/js/RDC.js")
