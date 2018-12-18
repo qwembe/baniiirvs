@@ -6,14 +6,15 @@ var socket = io.connect("http://localhost:3031");
 
 socket.on("event", (data) => {
     console.log(data);
+    let now = new Date();
     if (data.type === "message") {
         chat.innerHTML += `<li> ${data.data}</li>`;
     } 
     else if (data.type === "permit") {
-    	chat.innerHTML += `<li style="color: green;"> ${data.data}</li>`;
+    	chat.innerHTML += `<li style="color: green;"> ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${data.data}</li>`;
     }
     else if (data.type === "forbidden") {
-    	chat.innerHTML += `<li style="color: red;"> ${data.data}</li>`;
+    	chat.innerHTML += `<li style="color: red;"> ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} - ${data.data}</li>`;
     }
 });
 
